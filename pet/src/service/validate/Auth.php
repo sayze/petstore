@@ -26,7 +26,7 @@ class Auth {
 	 * @return boolean
 	 */
 	public function validate(string $token = '') {
-		$resp = $this->jsonRequest('valid_token', 'POST', [],[], ['token' => $token]);
+		$resp = $this->jsonRequest('is_auth', 'POST', [],[], ['value' => $token]);
 		return $resp['status'] === 'OK';
 	}
 

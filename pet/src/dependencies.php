@@ -24,6 +24,12 @@ return function (App $app) {
 		]);
 	};
 
+	// orm.
+	$container['doctrine'] = function ($c) {
+		require __DIR__ . '/../config/doctrine.php';
+		return $entityManager;	
+	};
+
 	// response builder.
 	$container['jresponse'] = function ($c) {
 		return new ResponseBuilder();
@@ -31,7 +37,7 @@ return function (App $app) {
 
   // data access object service.
   $container['access'] = function ($c) {
-    return new PetAccess($c, $c->get('db'));
+    return new PetAccess($c->get('doctrine'));
 	};
 	
 	// token authentication service.
@@ -39,25 +45,6 @@ return function (App $app) {
 		$guzzle = $c->get('guzzle');
 		return new Auth($guzzle);
 	};
-
-  // database access.
-  $container['db'] = function ($c) {
-		$conn = NULL;
-		$logger = $c->get('logger');
-
-    try {
-      $db = $c->get('settings')['database'];
-      $conn = new PDO('mysql:host=' . $db['host'] . ';dbname=' . $db['name'] . '', $db['user'], $db['password']);
-
-      // set the PDO error mode to exception
-      $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-      return $conn;
-    }
-    catch(PDOException $e)
-    {
-      $logger->critical("Connection failed to database: " . $e->getMessage());
-		}
-  };
 
   // monolog
   $container['logger'] = function ($c) {

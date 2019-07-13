@@ -5,11 +5,18 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
 return function (App $app) {
+	$c = $app->getContainer();
 
-  $app->add(function(ServerRequestInterface $request,  ResponseInterface $response, callable $next) use($app) {
+  $app->add(function(ServerRequestInterface $request,  ResponseInterface $response, callable $next) use($c) {
+		
+		// Bypass on debug mode.
+		if ($c->get('settings')['debug']) {
+			return $next($request, $response);
+		}
+
 		// Get required services from container.
-		$resp = $app->getContainer()->get('jresponse');
-		$auth = $app->getContainer()->get('auth');
+		$resp = $c->get('jresponse');
+		$auth = $c->getContainer()->get('auth');
 
 		// Do we have an AUTH_TOKEN in request ?
 		$token = $request->hasHeader('AUTH_TOKEN') ? $request->getHeader('AUTH_TOKEN')[0] : FALSE;

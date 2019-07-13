@@ -3,13 +3,8 @@ return [
 	// NOTE: Since only one deploy env db config can sit directly here.
 	// no need for env files or external env variables.
   'settings' => [
-    'database' => [
-      'host' => 'localhost:8889',
-      'user' => 'root',
-      'password' => 'root',
-      'name' => 'pets',
-    ],
-
+		'debug' => TRUE,
+		
     'displayErrorDetails' => TRUE,
     // set to false in production
     'addContentLengthHeader' => FALSE,

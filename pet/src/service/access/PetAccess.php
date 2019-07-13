@@ -5,17 +5,19 @@
 
 namespace App\Service\Access;
 
+use Doctrine\ORM\EntityManager;
+
 class PetAccess {
 
   /**
-   * @var \PDO $db
+   * @var EntityManager $em
    */
-  private $db;
+  private $em;
 
 	// Note: Ideally in larger context would use autowiring 
 	// but since scope is limited we can manually inject here.
-  public function __construct(\Slim\Container $container, \PDO $db) {
-    $this->db = $db;
+  public function __construct(EntityManager $em) {
+    $this->em = $em;
   }
 
   /**

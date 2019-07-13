@@ -2,56 +2,53 @@
 
 namespace App\Model;
 
-class Pet implements Model{
+/**
+ * @Entity 
+ * @Table(name="pets")
+ */
+class Pet {
 
 	/**
-	 * Unique identifier pertaining to a pet.
-	 *
-	 * @var $id {integer}
+	 * @var int
+	 * @Id 
+	 * @Column(type="integer") 
+	 * @GeneratedValue 
 	 */
-	protected $id;
+	private $id;
 
 	/**
-	 * Category of pet. 
-	 * 
-	 * Foreign key reference.
-	 *
-	 * @var $category {integer}
+	 * @var int
+	 * @OneToOne(targetEntity="Category")
+   * @JoinColumn(name="category_id", referencedColumnName="id")
 	 */
 	private $category;
 
 	/**
-	 * Name of the pet.
-	 *
-	 * @var $name {string}
+	 * @var string
+	 * @Column(type="string")
 	 */
 	private $name;
 
 	/**
-	 * Photos pertaining to a pet.
-	 * 
-	 * Since pet can have many photo's this will need to tie into M -> M table.
-	 *
-	 * @var $photoUrls {integer}
+	 * @var int
+   * @OneToMany(targetEntity="PetPhoto", mappedBy="pet")
+	 * @JoinColumn(name="photo_id", referencedColumnName="pet_id")
 	 */
-	private $photoUrls;
+	private $photos;
 
 	/**
-	 * Tags related to pet.
-	 *
-	 * M -> M table.
-	 * 
-	 * @var $tags {int}
+	 * @var int
+	 * @OneToMany(targetEntity="PetTag", mappedBy="pet")
+	 * @JoinColumn(name="tag_id", referencedColumnName="pet_id")
 	 */
 	private $tags;
 	
 	/**
-	 * Status of pet in store.
-	 *	
 	 * Assumption is status will always be one of 3 [available, pending, sold] 
 	 * and therefore can store in context table.
 	 * 
-	 * @var $status {int}
+	 * @var int
+	 * @Column(type="integer")
 	 */
 	private $status;
 
