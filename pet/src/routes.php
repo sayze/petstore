@@ -32,9 +32,18 @@ return function (App $app) {
 		 * Handler for creating a new pet.
 		 */
 		$app->post('pet', function (Request $request, Response $response, array $args) use($c) {
-			$pet_access = $c->get('access');
+			$json_data = json_decode($request->getBody(), TRUE);
 			$rb = $c->get('jresponse');
-			$pet_access->createPet(json_decode($request->getBody(), TRUE));
+			
+			if (!$json_data) {
+				$rb->setMessage('The json body you have supplied is invalid.');
+				$rb->setStatus($rb::CODE_BAD_REQUEST);
+				return $response->withJson($rb->build())->withStatus($rb::CODE_BAD_REQUEST);
+			}
+			
+			$pet_access = $c->get('access');
+			$pet_access->createPet($json_data);
+			
 			return $response->withJson($rb->build('Created 1 new pet.'));
 		});
   });
