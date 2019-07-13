@@ -57,7 +57,6 @@ class PetAccess {
 		$pet->setName($data['name']);
 		$pet->setStatus($data['status']);
 
-		// TODO: Consolidate below checks into one helper or such.
 		if (isset($data['category'])) {
 			$category = new Category();
 			$category->setName($data['category']['name']);
