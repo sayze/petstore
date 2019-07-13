@@ -1,4 +1,4 @@
-# Pet Store Pet Service
+# Pet Service
 
 Built on php slim framework
 
