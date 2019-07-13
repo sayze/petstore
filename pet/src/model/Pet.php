@@ -85,7 +85,10 @@ class Pet {
 		$tags = [];
 
 		foreach ($this->tags as $tag ) {
-			$tags[] = $tag->getValue();
+			$tags[] = [
+				'id' => $tag->getId(),
+				'name' => $tag->getValue(),
+			];
 		}
 
 		return $tags;
@@ -105,6 +108,14 @@ class Pet {
 
 	public function setStatus(string $status) {
 		$this->status = $status;
+	}
+
+	public function addPhoto(PetPhoto $pet_photo) {
+		$this->photos->add($pet_photo);
+	}
+
+	public function addTag(PetTag $pet_tag) {
+		$this->tags->add($pet_tag);
 	}
 
 }

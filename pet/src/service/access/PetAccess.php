@@ -18,28 +18,34 @@ class PetAccess {
    */
   private $em;
 
-	// Note: Ideally in larger context would use autowiring 
+	// Note: Larger context could use autowiring 
 	// but since scope is limited we can manually inject here.
   public function __construct(EntityManager $em) {
     $this->em = $em;
   }
 
 	/**
-	 * Get all the pets currently stored in db.
+	 * Internal function to get pets based on criteria.
 	 *
-	 * @return void
+	 * @return array
 	 */
-	public function getPets() {
-		$pets = $this->em->getRepository('\App\Model\Pet')->findAll();
+	private function getPets(array $criteria = []) {
+		$pets = $this->em->getRepository('\App\Model\Pet')->findBy($criteria);
 		$data = [];
 		
 		foreach ($pets as $pet) {
+			$category = $pet->getCategory();
+			
 			$data[] = [
 				'id' => $pet->getId(),
+				'category' => [
+					'id' => $category->getId(),
+					'name' => $category->getName(),
+				],
 				'name' => $pet->getName(),
-				'category' => $pet->getCategory()->getName(),
-				'photos' => $pet->getPhotos(),
-				'tags' => $pet->getTags()
+				'photoUrls' => $pet->getPhotos(),
+				'tags' => $pet->getTags(),
+				'status' => $pet->getStatus()
 			];
 		}
 		
@@ -53,9 +59,20 @@ class PetAccess {
    * @param array $data all the fields values.
    */
   public function createPet(array $data) {
-		$pet = new Pet();
-		$pet->setName($data['name']);
-		$pet->setStatus($data['status']);
+		$pet = new Pet();		
+		$name = $data['name'];
+		$status = $data['status'];
+	
+		$pet->setName($name);
+		$pet->setStatus($status);
+
+		foreach ($data['photoUrls'] as $value) {
+			$photo = new PetPhoto();	
+			$photo->setPhotoUrl($value);
+			$photo->setPet($pet);
+			$pet->addPhoto($photo);
+			$this->em->persist($photo);
+		}
 
 		if (isset($data['category'])) {
 			$category = new Category();
@@ -64,37 +81,20 @@ class PetAccess {
 			$pet->setCategory($category);
 		}
 
-		if (isset($data['photoUrls'])) {
-			foreach ($data['photoUrls'] as $value) {
-				$photo = new PetPhoto();	
-				$photo->setPhotoUrl($value);
-				$photo->setPet($pet);
-				
-				$this->em->persist($photo);
-				$photos[] = $photo->getPhotoUrl();
-			}
-		}
-
 		if (isset($data['tags'])) {
 			foreach ($data['tags'] as $value) {
 				$tag = new PetTag();	
 				$tag->setValue($value['name']);
 				$tag->setPet($pet);
+				$pet->addTag($tag);
 				$this->em->persist($tag);
-
-				$tags[] = [
-					'id' => $tag->getId(),
-					'name' => $tag->getValue()
-				];
 			}
 		}
 
 		$this->em->persist($pet);
-		$this->em->flush($pet);
+		$this->em->flush();
 		
-		return true;
+		return $this->getPets(['id' => $pet->getId()]);
 	}
-
-	
 
 }
