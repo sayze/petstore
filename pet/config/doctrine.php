@@ -10,8 +10,11 @@ $config = Setup::createAnnotationMetadataConfiguration(array(__DIR__."/../src/mo
 
 // database configuration parameters
 $conn = array(
-    'driver' => 'pdo_sqlite',
-    'path' => __DIR__ . '/../db.sqlite',
+	'dbname' => 'petstore',
+	'user' => 'lamp-gen',
+	'password' => 'lg99np4',
+	'host' => 'localhost',
+	'driver' => 'pdo_mysql',
 );
 
 // obtaining the entity manager

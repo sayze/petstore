@@ -46,7 +46,7 @@ class PetTag {
 	}
 
 	public function setValue(string $value) {
-		$this->setValue($value);
+		$this->value = $value;
 	}
 
 }

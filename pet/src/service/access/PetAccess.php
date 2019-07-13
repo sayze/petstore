@@ -30,7 +30,7 @@ class PetAccess {
 	 * @return void
 	 */
 	public function getPets() {
-		$pets = $this->em->getRepository('\App\Model\PetPhoto')->findAll();
+		$pets = $this->em->getRepository('\App\Model\Pet')->findAll();
 		$data = [];
 		
 		foreach ($pets as $pet) {
@@ -39,6 +39,7 @@ class PetAccess {
 				'name' => $pet->getName(),
 				'category' => $pet->getCategory()->getName(),
 				'photos' => $pet->getPhotos(),
+				'tags' => $pet->getTags()
 			];
 		}
 		
@@ -53,14 +54,10 @@ class PetAccess {
    */
   public function createPet(array $data) {
 		$pet = new Pet();
-		$category = null;
-		$tags = null;
-		$photos = null;
-
 		$pet->setName($data['name']);
 		$pet->setStatus($data['status']);
 
-		// TODO: Consolidate below checks into one helper or such !
+		// TODO: Consolidate below checks into one helper or such.
 		if (isset($data['category'])) {
 			$category = new Category();
 			$category->setName($data['category']['name']);
@@ -73,25 +70,25 @@ class PetAccess {
 				$photo = new PetPhoto();	
 				$photo->setPhotoUrl($value);
 				$photo->setPet($pet);
-				$this->em->persist($photo);
 				
+				$this->em->persist($photo);
 				$photos[] = $photo->getPhotoUrl();
 			}
 		}
 
-		// if (isset($data['tags'])) {
-		// 	foreach ($data['tags'] as $value) {
-		// 		$tag = new PetTag();	
-		// 		$tag->setValue($value['name']);
-		// 		$tag->setPet($pet);
-		// 		$this->em->persist($tag);
+		if (isset($data['tags'])) {
+			foreach ($data['tags'] as $value) {
+				$tag = new PetTag();	
+				$tag->setValue($value['name']);
+				$tag->setPet($pet);
+				$this->em->persist($tag);
 
-		// 		$tags[] = [
-		// 			'id' => $tag->getId(),
-		// 			'name' => $tag->getValue()
-		// 		];
-		// 	}
-		// }
+				$tags[] = [
+					'id' => $tag->getId(),
+					'name' => $tag->getValue()
+				];
+			}
+		}
 
 		$this->em->persist($pet);
 		$this->em->flush($pet);

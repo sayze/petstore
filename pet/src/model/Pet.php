@@ -2,6 +2,8 @@
 
 namespace App\Model;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 /**
  * @Entity 
  * @Table(name="pets")
@@ -52,6 +54,11 @@ class Pet {
 	 */
 	private $status;
 
+	public function __construct() {
+		$this->photos = new ArrayCollection();
+		$this->tags = new ArrayCollection();	
+	}
+
 	public function getId() {
 		return $this->id;
 	}
@@ -65,11 +72,23 @@ class Pet {
 	}
 
 	public function getPhotos() {
-		return $this->photos;
+		$photos = [];
+
+		foreach ($this->photos as $photo ) {
+			$photos[] = $photo->getPhotoUrl();
+		}
+
+		return $photos;
 	}
 
 	public function getTags() {
-		return $this->tags;
+		$tags = [];
+
+		foreach ($this->tags as $tag ) {
+			$tags[] = $tag->getValue();
+		}
+
+		return $tags;
 	}
 
 	public function getStatus() {
@@ -84,27 +103,8 @@ class Pet {
 		$this->category = $category;
 	}
 
-	public function setPhotos() {
-
-	}
-
-	public function setTags() {
-
-	}
-
 	public function setStatus(string $status) {
 		$this->status = $status;
-	}
-
-	public function validate() {
-		$valid = TRUE;
-		$message = '';
-			
-		return [
-			'valid' => $valid,
-			'message' => $message
-		];
-		
 	}
 
 }
