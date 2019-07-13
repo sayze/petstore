@@ -5,31 +5,40 @@
  */
 
 use Slim\App;
+use \GuzzleHttp\Client;
+use \App\Service\Response\ResponseBuilder;
+use \App\Service\Validate\Auth;
+use \App\Service\Access\PetAccess;
+use \Monolog\Logger;
+use \Monolog\Processor\UidProcessor;
+use \Monolog\Handler\StreamHandler;
 
 return function (App $app) {
   $container = $app->getContainer();
 
-  // // Csrf.
-  // $container['csrf'] = function ($c) {
-  //   return new \Slim\Csrf\Guard;
-  // };
-
-  // // view renderer
-  // $container['renderer'] = function ($c) {
-  //   $settings = $c->get('settings')['renderer'];
-  //   return new \Slim\Views\PhpRenderer($settings['template_path']);
-  // };
-
+	// guzzle.
+	$container['guzzle'] = function($c) {
+		return new Client([
+			'base_uri' => 'http:/127.0.0.1:3000/api/',
+			'timeout'  => 2.0,
+		]);
+	};
 
 	// response builder.
 	$container['jresponse'] = function ($c) {
-		return new \App\Service\Response\ResponseBuilder();
+		return new ResponseBuilder();
 	};
 
   // data access object service.
   $container['access'] = function ($c) {
-    return new \App\Service\Access\PetAccess($c, $c->get('db'));
-  };
+    return new PetAccess($c, $c->get('db'));
+	};
+	
+	// token authentication service.
+	$container['auth'] = function ($c) {
+		$guzzle = $c->get('guzzle');
+		return new Auth($guzzle);
+	};
 
   // database access.
   $container['db'] = function ($c) {
@@ -53,9 +62,9 @@ return function (App $app) {
   // monolog
   $container['logger'] = function ($c) {
     $settings = $c->get('settings')['logger'];
-    $logger = new \Monolog\Logger($settings['name']);
-    $logger->pushProcessor(new \Monolog\Processor\UidProcessor());
-    $logger->pushHandler(new \Monolog\Handler\StreamHandler($settings['path'], $settings['level']));
+    $logger = new Logger($settings['name']);
+    $logger->pushProcessor(new UidProcessor());
+    $logger->pushHandler(new StreamHandler($settings['path'], $settings['level']));
     return $logger;
   };
 };

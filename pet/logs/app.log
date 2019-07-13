@@ -1,1 +1,2 @@
 [2019-07-13 01:02:35] slim-app.CRITICAL: Connection failed to database: SQLSTATE[HY000] [2002] Connection refused [] {"uid":"fbe1901"}
+[2019-07-13 04:46:27] slim-app.CRITICAL: Connection failed to database: SQLSTATE[HY000] [2002] Connection refused [] {"uid":"38f9361"}
