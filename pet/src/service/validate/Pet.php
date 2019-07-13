@@ -10,7 +10,7 @@ namespace App\Service\Validate;
 
 class Pet {
 
-	public function validate() {
+	public function validate(array $data) {
 		
 	}
 

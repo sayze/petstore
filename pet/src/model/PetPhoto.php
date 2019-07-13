@@ -29,4 +29,19 @@ class PetPhoto {
 	 */
 	private $photoUrl;
 
+	public function getPhotoUrl() {
+		return $this->photoUrl;
+	}
+
+	public function getPet() {
+		return $this->pet;
+	}
+
+	public function setPhotoUrl(string $url) {
+		$this->photoUrl = $url;
+	}
+
+	public function setPet(Pet $pet) {
+		$this->pet = $pet;
+	}
 }

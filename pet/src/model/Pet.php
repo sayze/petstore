@@ -48,9 +48,53 @@ class Pet {
 	 * and therefore can store in context table.
 	 * 
 	 * @var int
-	 * @Column(type="integer")
+	 * @Column(type="string")
 	 */
 	private $status;
+
+	public function getId() {
+		return $this->id;
+	}
+
+	public function getName() {
+		return $this->name;
+	}
+
+	public function getCategory() {
+		return $this->category;
+	}
+
+	public function getPhotos() {
+		return $this->photos;
+	}
+
+	public function getTags() {
+		return $this->tags;
+	}
+
+	public function getStatus() {
+		return $this->status;
+	}
+
+	public function setName(string $name) {
+		$this->name = $name;
+	}
+
+	public function setCategory(Category $category) {
+		$this->category = $category;
+	}
+
+	public function setPhotos() {
+
+	}
+
+	public function setTags() {
+
+	}
+
+	public function setStatus(string $status) {
+		$this->status = $status;
+	}
 
 	public function validate() {
 		$valid = TRUE;
