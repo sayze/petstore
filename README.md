@@ -65,6 +65,6 @@ curl -X POST \
   http://104.248.30.254/api/auth/token \
   -H 'cache-control: no-cache' \
   -d '{
- "token": "$2a$04$WZah4HWMIugKE8NAc8WjEOxcWm1wg9mZ05jlXUW5t2nQAp3jYonRy"
+ "token": "hashed_secret"
 }'
 ```
