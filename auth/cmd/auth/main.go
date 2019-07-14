@@ -47,9 +47,8 @@ func main() {
 	router.Use(middleware.Recoverer)
 	router.Use(middleware.SetHeader("Content-Type", "application/json"))
 
-	router.Post("/api/authenticate", handlers.Authenticate)
-	router.Post("/api/validate", handlers.ValidToken)
-
+	router.Post("/secret", handlers.Authenticate)
+	router.Post("/token", handlers.ValidToken)
 	log.Println("authentication service listening on port 3000 ")
 	log.Fatal(http.ListenAndServe(":3000", router))
 }

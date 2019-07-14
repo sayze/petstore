@@ -3,9 +3,9 @@ return [
 	// NOTE: Since only one deploy env db config can sit directly here.
 	// no need for env files or external env variables.
   'settings' => [
-		'debug' => FALSE,
+		'debug' => TRUE,
 		
-    'displayErrorDetails' => FALSE,
+    'displayErrorDetails' => TRUE,
     // set to false in production
     'addContentLengthHeader' => FALSE,
     // Allow the web server to send the content-length header
