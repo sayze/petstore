@@ -8,7 +8,7 @@ use Slim\App;
 use \GuzzleHttp\Client;
 use \App\Service\Response\ResponseBuilder;
 use \App\Service\Validate\Auth;
-use App\Service\Access\PetAccess;
+use \App\Service\Access\PetAccess;
 use \Monolog\Logger;
 use \Monolog\Processor\UidProcessor;
 use \Monolog\Handler\StreamHandler;
