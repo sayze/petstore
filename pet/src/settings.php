@@ -3,17 +3,12 @@ return [
 	// NOTE: Since only one deploy env db config can sit directly here.
 	// no need for env files or external env variables.
   'settings' => [
-		'debug' => TRUE,
+		'debug' => FALSE,
 		
-    'displayErrorDetails' => TRUE,
+    'displayErrorDetails' => FALSE,
     // set to false in production
     'addContentLengthHeader' => FALSE,
     // Allow the web server to send the content-length header
-
-    // Renderer settings
-    'renderer' => [
-      'template_path' => __DIR__ . '/../templates/',
-    ],
 
     // Monolog settings
     'logger' => [

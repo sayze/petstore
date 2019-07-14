@@ -36,8 +36,8 @@ class Auth {
     ];
 
 		// Make plain http request to authentication service.
-		// Note: Realistically would go with gRPC here.
-		$resp = $this->client->post('is_auth', $req_options);
+		// Note: Realistically should go with gRPC here.
+		$resp = $this->client->post('validate', $req_options);
 		$decoded = $resp ? json_decode($this->resp->getBody(), TRUE) : NULL;
 		
 		return $decoded['status'] === 'OK';

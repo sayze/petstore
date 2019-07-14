@@ -8,9 +8,7 @@ services:
     auth:
         image: composer
         working_dir: /var/www
-        command: 
-          - composer install
-          - php -S 0.0.0.0:8080 -t public
+        command: php -S 0.0.0.0:8080 -t public
         environment:
             docker: "true"
         ports:

@@ -51,7 +51,7 @@ class Pet {
 		}
 
 		if (isset($data['status']) && !in_array($data['status'], $accepted_status) ) {
-			$this->errors[] = 'Field "status" must be one of ' . implode(" | ", $accepted_status);
+			$this->errors[] = 'Field "status" must be one of ' . implode(",", $accepted_status);
 		}
 
 		return count($this->errors) === 0;

@@ -6,12 +6,11 @@ use Psr\Http\Message\ResponseInterface;
 
 return function (App $app) {
 	$c = $app->getContainer();
-	$resp = $c->get('jresponse');
 
-		/**
+	/**
 	 * Middleware for authentication headers.
 	 */
-  $app->add(function(ServerRequestInterface $request,  ResponseInterface $response, callable $next) use($resp, $c) {
+  $app->add(function(ServerRequestInterface $request,  ResponseInterface $response, callable $next) use($c) {
 
 		// Bypass on debug mode.
 		if ($c->get('settings')['debug']) {
@@ -19,13 +18,14 @@ return function (App $app) {
 		}
 
 		// Get required services from container.
-		$auth = $c->getContainer()->get('auth');
+		$auth = $c->get('auth');
+		$resp = $c->get('jresponse');
 
 		// Do we have an AUTH_TOKEN in request ?
 		$token = $request->hasHeader('AUTH_TOKEN') ? $request->getHeader('AUTH_TOKEN')[0] : FALSE;
 		
 		// Since we will only ever return json we can default it at this point in the application.
-		// $response = $response->withHeader('Content-Type', 'application/json');
+		$response = $response->withHeader('Content-Type', 'application/json');
 
 		if (!$token) {
 			$response->getBody()->write((json_encode($resp->build('Could not find expected key AUTH_TOKEN in header.', [], $resp::CODE_BAD_REQUEST))));
