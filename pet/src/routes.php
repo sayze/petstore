@@ -25,13 +25,13 @@ return function (App $app) {
 
 			if (!$json_data) {
 				$rb->setMessage('The json body you have supplied is invalid.');
-				$rb->setStatus($rb::CODE_BAD_REQUEST);
+				$rb->setStatus($rb::STATUS_INVALID);
 				return $response->withJson($rb->build())->withStatus($rb::CODE_BAD_REQUEST);
 			}
 
 			if (!($v = new Validate())->validate($json_data)) {
-				$rb->setMessage('There was an issue with supplied json values.');
-				$rb->setStatus($rb::CODE_BAD_REQUEST);
+				$rb->setMessage('There was an issue with supplied json values. Refer to below errors.');
+				$rb->setStatus($rb::STATUS_INVALID);
 				$rb->setData($v->getErrors());
 				return $response->withJson($rb->build())->withStatus($rb::CODE_BAD_REQUEST);
 			}	

@@ -28,12 +28,12 @@ return function (App $app) {
 		$response = $response->withHeader('Content-Type', 'application/json');
 
 		if (!$token) {
-			$response->getBody()->write((json_encode($resp->build('Could not find expected key AUTH_TOKEN in header.', [], $resp::CODE_BAD_REQUEST))));
+			$response->getBody()->write((json_encode($resp->build('Could not find expected key AUTH_TOKEN in header.', [], $resp::STATUS_INVALID))));
 			return $response->withStatus($resp::CODE_BAD_REQUEST);
 		}
 		
 		if (!$auth->validate($token)) {
-			$response->getBody()->write(json_encode($resp->build('You are not authorized to access this resource.', [], $resp::CODE_UNAUTHORISED)));
+			$response->getBody()->write(json_encode($resp->build('You are not authorized to access this resource.', [], $resp::STATUS_OK)));
 			return $response->withStatus($resp::CODE_UNAUTHORISED);
 		}	
 		
