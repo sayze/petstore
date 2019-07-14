@@ -28,7 +28,7 @@ class Auth {
 	public function validate(string $token = '') {
 		$req_options = [
       'json' => [
-				'value' => $token
+				'token' => $token
 			],
       'headers' => [
 				'AUTH_TOKEN' => $token
@@ -38,8 +38,7 @@ class Auth {
 		// Make plain http request to authentication service.
 		// Note: Realistically should go with gRPC here.
 		$resp = $this->client->post('validate', $req_options);
-		$decoded = $resp ? json_decode($this->resp->getBody(), TRUE) : NULL;
-		
+		$decoded = json_decode($resp->getBody(), TRUE);	
 		return $decoded['status'] === 'OK';
 	}
 }

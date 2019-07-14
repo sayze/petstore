@@ -3,7 +3,7 @@ return [
 	// NOTE: Since only one deploy env db config can sit directly here.
 	// no need for env files or external env variables.
   'settings' => [
-		'debug' => TRUE,
+		'debug' => FALSE,
 		
     'displayErrorDetails' => FALSE,
     // set to false in production
